@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Kaif Nawaz - Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* Deep dark background */
+            color: #e0e0e0; /* Light grey text */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            cursor: none; /* Hide default cursor */
+            position: relative;
+        }
+
+        /* Custom scrollbar for a sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8b5cf6; /* Purple */
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa; /* Lighter purple */
+        }
+
+        /* Glowing effect for cards and interactive elements */
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.3); /* Purple glow */
+            transition: all 0.5s ease-in-out; /* Smoother transition */
+        }
+
+        .glow-effect:hover {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.7), 0 0 40px rgba(139, 92, 246, 0.5);
+            transform: translateY(-5px); /* Enhanced rising effect */
+        }
+
+        /* Section heading animation */
+        .section-heading {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .section-heading.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Section heading active animation (triggered by JS) */
+        .section-heading.heading-active-animation {
+            animation: headingShake 0.5s infinite alternate;
+        }
+        @keyframes headingShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+            100% { transform: translateX(0); }
+        }
+
+
+        /* Particle for cursor trail (glittery effect) */
+        .particle {
+            position: fixed;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8), rgba(139, 92, 246, 0.6)); /* White to purple */
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeOutGrow 1.2s forwards; /* Slightly longer duration for more significance */
+            z-index: 9999;
+        }
+
+        @keyframes fadeOutGrow {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5); /* Smaller size */
+                opacity: 0;
+            }
+        }
+
+        /* Custom cursor dot */
+        #custom-cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background-color: #8b5cf6; /* Purple dot */
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease;
+            z-index: 10000;
+        }
+
+        /* Navbar active link styling */
+        .nav-link.active {
+            color: #ffffff; /* Brighter white for active link */
+            font-weight: 600;
+            background-color: rgba(139, 92, 246, 0.5); /* More opaque purple background */
+            border-bottom: 2px solid #a78bfa;
+            border-radius: 8px; /* Rounded background */
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.7); /* More pronounced glow */
+        }
+
+        /* Video background styling */
+        .video-background {
+            position: fixed; /* Changed to fixed to cover entire viewport */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -3; /* Behind all content and cursor/particles */
+        }
+
+        .video-background video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover; /* Cover the entire container */
+        }
+
+        /* Overlay for video to ensure text readability (darker) */
+        .video-overlay {
+            position: fixed; /* Changed to fixed */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7); /* Adjusted to 0.7 for more visibility */
+            z-index: -2; /* Above video, below content */
+        }
+
+        /* Text glow for headings */
+        .text-glow {
+            text-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6, 0 0 24px #8b5cf6; /* More pronounced glow */
+        }
+
+        /* Hover details for skills and education */
+        .detail-card {
+            position: absolute;
+            bottom: 100%; /* Position above the card */
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px); /* Adjust for spacing */
+            background-color: rgba(30, 30, 30, 0.98); /* Slightly lighter dark background, more opaque */
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            z-index: 10;
+            width: max-content;
+            max-width: 250px;
+            text-align: center;
+            border: 1px solid #8b5cf6; /* Purple border */
+        }
+
+        .group:hover .detail-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); /* Move up slightly */
+        }
+
+        /* Arrow for tooltip-like effect */
+        .detail-card::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -8px; /* Position below the card */
+            transform: translateX(-50%) rotate(45deg);
+            width: 15px;
+            height: 15px;
+            background-color: rgba(30, 30, 30, 0.98);
+            border-right: 1px solid #8b5cf6;
+            border-bottom: 1px solid #8b5cf6;
+            z-index: 9;
+        }
+
+        /* About Me Card (No Flip) */
+        .about-card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px; /* Ensure enough height for the card */
+        }
+
+        .about-card {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: fit-content; /* Allow height to naturally fit content */
+            min-height: 250px; /* Ensure minimum height */
+            cursor: pointer;
+            background-color: rgba(26, 26, 26, 0.4);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden; /* Keep hidden by default for visual consistency */
+            padding: 2.5rem; /* Base padding for the card */
+        }
+
+        .about-card-front,
+        .about-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back of the element when facing away */
+            border-radius: 20px;
+            box-sizing: border-box;
+            background-color: rgba(26, 26, 26, 0); /* Transparent background for smooth fade */
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out; /* Smooth transition */
+            text-align: center;
+        }
+
+        .about-card-front {
+            z-index: 2;
+            opacity: 1;
+            visibility: visible;
+            flex-direction: column; /* For stacking photo and text */
+        }
+
+        .about-card-back {
+            z-index: 1;
+            opacity: 0;
+            visibility: hidden;
+            align-items: flex-start; /* Align text to top-left */
+            text-align: left;
+            overflow-y: auto; /* Allow scrolling if content is too long */
+        }
+
+        /* On hover, transition visibility */
+        .about-card:hover .about-card-front {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .about-card:hover .about-card-back {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Smoke particles (refined for continuous effect from borders) */
+        .smoke-particle {
+            position: absolute;
+            background: rgba(139, 92, 246, 0.6); /* Purple, more opaque */
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeOutUpGrow 0.8s forwards; /* Faster fade for more distinct bursts */
+            z-index: 9998; /* Below cursor particles */
+            box-shadow: 0 0 5px rgba(139, 92, 246, 0.5); /* Subtle glow for smoke */
+        }
+
+        @keyframes fadeOutUpGrow {
+            0% {
+                transform: scale(0.2) translateY(0);
+                opacity: 0.8; /* Start more opaque */
+            }
+            100% {
+                transform: scale(1.5) translateY(-20px); /* Move up and grow slightly more */
+                opacity: 0;
+            }
+        }
+
+        /* Emoji Animations */
+        .emoji-pulse {
+            animation: emojiPulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes emojiPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .emoji-shake {
+            animation: emojiShake 0.8s infinite alternate;
+        }
+
+        @keyframes emojiShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-2px) rotate(-1deg); }
+            75% { transform: translateX(2px) rotate(1deg); }
+            100% { transform: translateX(0); }
+        }
+
+        .emoji-bounce {
+            animation: emojiBounce 1s infinite ease-in-out;
+        }
+
+        @keyframes emojiBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .emoji-rotate {
+            animation: emojiRotate 2s infinite linear;
+        }
+
+        @keyframes emojiRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Specific glow for light bulb emoji */
+        .emoji-glow {
+            text-shadow: 0 0 5px #ffeb3b, 0 0 10px #ffeb3b, 0 0 15px #ffeb3b; /* Yellow glow */
+            animation: lightBulbGlow 2s infinite alternate; /* New glow animation */
+        }
+        @keyframes lightBulbGlow {
+            0% { text-shadow: 0 0 5px #ffeb3b, 0 0 10px #ffeb3b, 0 0 15px #ffeb3b; opacity: 1; }
+            50% { text-shadow: 0 0 2px #ffeb3b, 0 0 4px #ffeb3b, 0 0 6px #ffeb3b; opacity: 0.7; }
+            100% { text-shadow: 0 0 5px #ffeb3b, 0 0 10px #ffeb3b, 0 0 15px #ffeb3b; opacity: 1; }
+        }
+
+
+        /* New for Education Section & Tiles */
+        .education-section-animate {
+            opacity: 0;
+            transform: translateY(20px); /* Consistent with other section headings */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .education-section-animate.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .education-card-animate {
+            opacity: 0;
+            transform: translateX(50px); /* Start from right */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .education-card-animate.animate-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Skills Section Animation */
+        .skill-card-animate {
+            opacity: 0;
+            transform: translate(0, 30px); /* Default start position */
+            transition: opacity 1s ease-out, transform 1s ease-out; /* Slower transition */
+        }
+        .skill-card-animate.animate-in {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+        /* For different directions for skill cards */
+        .skill-card-animate.from-left { transform: translateX(-50px); }
+        .skill-card-animate.from-right { transform: translateX(50px); }
+        .skill-card-animate.from-top { transform: translateY(-50px); }
+        .skill-card-animate.from-bottom { transform: translateY(50px); }
+
+        .skill-card-animate.from-left.animate-in,
+        .skill-card-animate.from-right.animate-in,
+        .skill-card-animate.from-top.animate-in,
+        .skill-card-animate.from-bottom.animate-in {
+            transform: translate(0, 0); /* Reset to original position */
+            opacity: 1;
+        }
+
+        /* New for Skills Section Flip */
+        .skill-card-flip-container {
+            perspective: 1000px; /* For 3D effect */
+            height: 200px; /* Fixed height for consistent card size, adjust as needed */
+            width: 100%;
+            max-width: 250px; /* Adjust max width as needed */
+            margin: 0 auto;
+            border-radius: 20px; /* Match card border-radius */
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.3); /* Glow effect */
+            transition: box-shadow 0.5s ease-in-out; /* Smooth glow transition */
+        }
+
+        .skill-card-flip-container:hover {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.7), 0 0 40px rgba(139, 92, 246, 0.5);
+        }
+
+        .skill-card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s; /* Slower flip transition */
+            transform-style: preserve-3d;
+            border-radius: 20px;
+        }
+
+        .skill-card-front, .skill-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back of the element when facing away */
+            border-radius: 20px;
+            background-color: rgba(26, 26, 26, 0.4); /* Card background */
+            border: 1px solid #8b5cf6; /* Purple border */
+            padding: 1.5rem; /* Adjusted padding for content */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .skill-card-back {
+            transform: rotateY(180deg); /* Initially hidden */
+            justify-content: flex-start; /* Align text to top */
+            padding-top: 2rem; /* More padding for text */
+        }
+
+        .skill-card-flip-container:hover .skill-card-flipper {
+            transform: rotateY(180deg);
+        }
+
+        /* New specific skill logo animations - FASTER */
+        @keyframes htmlPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .html-logo-animated { animation: htmlPulse 0.8s infinite ease-in-out; } /* Faster */
+
+        @keyframes cssWave {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-3px) translateX(2px); }
+            75% { transform: translateY(3px) translateX(-2px); }
+        }
+        .css-logo-animated { animation: cssWave 1s infinite ease-in-out; } /* Faster */
+
+        @keyframes jsSparkle {
+            0%, 100% { opacity: 1; text-shadow: none; }
+            50% { opacity: 0.8; text-shadow: 0 0 5px rgba(255, 255, 0, 0.7), 0 0 10px rgba(255, 255, 0, 0.5); }
+        }
+        .js-logo-animated { animation: jsSparkle 0.7s infinite alternate; } /* Faster */
+
+        /* React.js animation remains same */
+        @keyframes reactSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .react-logo-animated { animation: reactSpin 3s infinite linear; }
+
+        @keyframes pythonWiggle {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-2px) rotate(-1deg); }
+            75% { transform: translateX(2px) rotate(1deg); }
+            100% { transform: translateX(0); }
+        }
+        .python-logo-animated { animation: pythonWiggle 0.9s infinite alternate; } /* Faster */
+
+        @keyframes sqlPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.9; }
+        }
+        .sql-logo-animated { animation: sqlPulse 1s infinite ease-in-out; } /* Faster */
+
+        /* Git/GitHub animation remains same */
+        @keyframes githubBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .github-logo-animated { animation: githubBounce 1s infinite ease-out; }
+
+        @keyframes figmaFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px) scale(1.02); }
+        }
+        .figma-logo-animated { animation: figmaFloat 1.2s infinite ease-in-out; } /* Faster */
+
+
+        /* Specific emoji animations */
+        .emoji-calculator-shake {
+            animation: calculatorShake 0.6s infinite alternate;
+            display: inline-block; /* Ensure transform applies */
+        }
+        @keyframes calculatorShake {
+            0% { transform: translateX(0) scale(1); }
+            25% { transform: translateX(-6px) rotate(-5deg) scale(1.15); } /* More aggressive */
+            75% { transform: translateX(6px) rotate(5deg) scale(1.15); } /* More aggressive */
+            100% { transform: translateX(0) scale(1); }
+        }
+
+        .emoji-globe-rotate {
+            animation: globeRotate 1s infinite linear; /* Faster rotation */
+            display: inline-block; /* Ensure transform applies */
+        }
+        @keyframes globeRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Removed section background transparency and lighting effect */
+        /* .bg-gray-800 is now the primary background for cards/tiles */
+        .bg-gray-800 {
+            background-color: rgba(26, 26, 26, 0.4); /* More transparent for cards */
+        }
+        .about-card, .about-card-front, .about-card-back {
+            background-color: rgba(26, 26, 26, 0.4); /* More transparent for about card */
+        }
+
+        /* Project Card Flip Styles */
+        .project-card-flip-container {
+            perspective: 1000px; /* For 3D effect */
+            height: 450px; /* Fixed height for consistent card size */
+            border-radius: 20px;
+            background-color: rgba(26, 26, 26, 0.4); /* Card background */
+            border: 1px solid #8b5cf6; /* Purple border */
+            padding: 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            /* Interactive hover transitions */
+            transition: all 0.3s ease-in-out, box-shadow 0.5s ease-in-out;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(139, 92, 246, 0.3); /* Initial glow */
+        }
+
+        .project-card-flip-container:hover {
+            transform: translateY(-10px) scale(1.05) rotateZ(-2deg); /* More prominent lift, scale, and tilt */
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.9), 0 0 50px rgba(139, 92, 246, 0.6); /* Stronger glow on hover */
+        }
+
+        .project-card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+        }
+
+        .project-card-front, .project-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hide the back of the element when facing away */
+            border-radius: 20px;
+            background-color: rgba(26, 26, 26, 0); /* Transparent for flip effect */
+            box-sizing: border-box;
+        }
+
+        .project-card-back {
+            transform: rotateY(180deg); /* Initially hidden */
+        }
+
+        .project-card-flipper.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* New Project Entrance Animations */
+        .project-card-animated {
+            opacity: 0;
+            /* Initial state for all animated project cards */
+        }
+
+        /* Animation Keyframes */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUpScale {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInBounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05); /* Slight overshoot for bounce */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Apply animations on 'animate-in' class */
+        .project-card-animated.slide-in-left.animate-in {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .project-card-animated.slide-in-right.animate-in {
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+        .project-card-animated.fade-in-up-scale.animate-in {
+            animation: fadeInUpScale 1s ease-out forwards;
+        }
+
+        .project-card-animated.fade-in-bounce.animate-in {
+            animation: fadeInBounce 1s ease-out forwards;
+        }
+
+
+        /* Style for the "Play Sound" button */
+        #play-sound-button {
+            position: fixed; /* Changed to fixed as it's now global */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(139, 92, 246, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 20; /* Above video overlay and content */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: none; /* Hidden by default */
+            border: 2px solid #a78bfa;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.7);
+        }
+
+        #play-sound-button:hover {
+            background-color: rgba(139, 92, 246, 1);
+            transform: translateX(-50%) translateY(-3px);
+        }
+
+        /* What I'm Currently Learning - New Creative Layout */
+        .learning-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding-left: 1.5rem; /* Space for the line */
+            transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out, opacity 0.4s ease-in-out; /* Smooth transitions for hover */
+            cursor: pointer; /* Indicate interactivity */
+        }
+
+        .learning-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .learning-icon-container {
+            flex-shrink: 0;
+            width: 4rem;
+            height: 4rem;
+            background-color: #8b5cf6; /* Purple background for icon */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.7);
+            z-index: 2; /* Above the line */
+            position: absolute;
+            left: -0.5rem; /* Adjust to align with the line */
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .learning-content {
+            flex-grow: 1;
+            background-color: rgba(26, 26, 26, 0.4); /* Card background */
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #8b5cf6;
+            margin-left: 2rem; /* Push content to the right of the line */
+            position: relative;
+            transition: box-shadow 0.4s ease-in-out; /* For glowing effect */
+        }
+
+        .learning-line {
+            position: absolute;
+            left: 1rem; /* Adjust to align with icons */
+            width: 2px;
+            background-color: #8b5cf6; /* Purple line */
+            top: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .learning-line::before, .learning-line::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: #8b5cf6;
+            border-radius: 50%;
+        }
+
+        .learning-line::before {
+            top: -5px; /* Small circles at ends of line */
+        }
+
+        .learning-line::after {
+            bottom: -5px;
+        }
+
+        /* Animation for learning items */
+        .learning-item-animate {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .learning-item-animate.animate-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Hover states for learning items */
+        .learning-item:hover {
+            transform: translateY(-15px) rotate(-3deg); /* Lift and slight rotation */
+            z-index: 3; /* Bring hovered item to front */
+        }
+
+        .learning-item.is-inactive-learning {
+            filter: blur(1px) brightness(0.5); /* More blur, significantly dimmer */
+            opacity: 0.5; /* More transparent */
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.7); /* More noticeable glow */
+        }
+
+        /* Hovered learning item content glow */
+        .learning-item:hover .learning-content {
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.9), 0 0 50px rgba(139, 92, 246, 0.6); /* Stronger glow */
+        }
+
+        /* Blinking emoji animation */
+        @keyframes emojiBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .emoji-blinking {
+            animation: emojiBlink 0.8s infinite alternate; /* Blinking effect */
+        }
+
+        /* Heading glow/dim animation */
+        @keyframes headingGlowDim {
+            0% { text-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6, 0 0 24px #8b5cf6; opacity: 1; }
+            50% { text-shadow: none; opacity: 0.7; }
+            100% { text-shadow: 0 0 8px #8b5cf6, 0 0 16px #8b5cf6, 0 0 24px #8b5cf6; opacity: 1; }
+        }
+        .heading-glow-dim {
+            animation: headingGlowDim 2s infinite ease-in-out;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100">
+
+    <!-- Video Background (moved to body for entire website coverage) -->
+    <div class="video-background">
+        <video autoplay loop playsinline muted id="background-video" src="https://res.cloudinary.com/dcbdls72o/video/upload/v1753343613/Technology_Background_Template_1080_Copyright_free__Intro_template_Full_HD_with_sound_Free_video_1_oglrx4.mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <!-- Video Overlay for readability (moved to body) -->
+    <div class="video-overlay"></div>
+
+    <!-- Custom Cursor Dot -->
+    <div id="custom-cursor"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gray-900 bg-opacity-90 backdrop-blur-sm p-4 shadow-lg rounded-b-xl">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                Md Kaif Nawaz <span class="emoji-pulse">✨</span>
+            </a>
+            <div class="space-x-6">
+                <a href="#home" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Home <span class="emoji-bounce">🏠</span></a>
+                <a href="#about" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">About Me <span class="emoji-shake">🙋‍♂️</span></a>
+                <a href="#education" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Education <span class="emoji-bounce">🎓</span></a>
+                <a href="#skills" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Skills <span class="emoji-rotate">💻</span></a>
+                <a href="#projects" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Projects <span class="emoji-pulse">🚀</span></a>
+                <a href="#learning" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Learning Now <span class="emoji-bounce">📚</span></a>
+                <a href="#aim-ambitions" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Aim & Ambitions <span class="emoji-shake">🎯</span></a>
+                <a href="#contact" class="nav-link text-gray-300 hover:text-purple-400 transition-all duration-300 py-2 px-3 rounded-lg">Contact <span class="emoji-pulse">📧</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-16"> <!-- Adjusted padding for overall content -->
+
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center text-center p-8 relative overflow-hidden">
+            <div class="z-20 max-w-4xl mx-auto">
+                <h1 class="text-6xl md:text-7xl font-extrabold text-purple-300 mb-6 leading-tight animate-pulse text-glow">
+                    Hello, I'm <span class="text-purple-500">Md Kaif Nawaz</span> <span class="emoji-pulse">✨</span>
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-200 mb-8 font-light">
+                    Crafting digital experiences, one line of code at a time.
+                    <br>
+                    Welcome to my universe of innovation and passion! <span class="emoji-rotate">🌌</span>
+                </p>
+                <a href="#about" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 glow-effect">
+                    Explore My World <span class="emoji-bounce">👇</span>
+                </a>
+            </div>
+            <!-- Play Sound Button (now global, but still displayed within the home section for initial visibility) -->
+            <button id="play-sound-button" class="hidden">
+                <i class="fas fa-volume-up mr-2"></i> Play Sound
+            </button>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 px-8 mx-auto max-w-6xl about-card-container">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                About Me <span class="emoji-shake">🙋‍♂️</span>
+            </h2>
+            <div class="about-card glow-effect"> <!-- Keep glow effect on the card itself -->
+                <div class="about-card-front">
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full">
+                        <div class="md:w-1/3 flex justify-center">
+                            <img src="https://placehold.co/300x300/8b5cf6/ffffff?text=Your+Photo" alt="Md Kaif Nawaz" class="rounded-full border-4 border-purple-500 shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div class="md:w-2/3 text-lg leading-relaxed text-center md:text-left">
+                            <p class="mb-4 text-2xl font-semibold text-purple-300">Md Kaif Nawaz</p>
+                            <p class="mb-2 text-xl text-gray-200">B.Tech Student</p>
+                            <p class="text-lg text-gray-300">Dumka Engineering College</p>
+                            <p class="text-sm text-gray-400 mt-4">Hover to learn more!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-card-back">
+                    <div class="text-lg leading-relaxed text-center">
+                        <p class="mb-6">
+                            Hey there! I'm Md Kaif Nawaz, a passionate and aspiring B.Tech student currently in my 2nd semester at <span class="text-purple-300 font-semibold">Dumka Engineering College</span>. My journey into the world of technology began with a deep curiosity and a drive to build impactful solutions. <span class="emoji-pulse">🚀</span>
+                        </p>
+                        <p class="mb-6">
+                            I believe in the power of code to transform ideas into reality and solve real-world problems. My approach to learning is hands-on, always eager to dive into new concepts and implement them. I'm constantly seeking opportunities to expand my knowledge and contribute to exciting projects. <span class="emoji-pulse">✨</span>
+                        </p>
+                        <p>
+                            Beyond the screen, I'm fueled by a desire to innovate and create. This portfolio is a glimpse into my dedication, skills, and the exciting path I'm forging in the tech landscape. Let's build something amazing together! <span class="emoji-bounce">💡</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                Education <span class="emoji-bounce">🎓</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Current Education -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-purple-700 hover:border-purple-500 transition-all duration-300 glow-effect relative group education-card-animate">
+                    <h3 class="text-3xl font-semibold text-purple-300 mb-4">Bachelor of Technology (B.Tech)</h3>
+                    <p class="text-xl text-gray-200 mb-2">
+                        <i class="fas fa-university text-purple-400 mr-2"></i> Dumka Engineering College
+                    </p>
+                    <p class="text-lg text-gray-300 mb-2">
+                        <i class="fas fa-calendar-alt text-purple-400 mr-2"></i> 2nd Semester (Currently Pursuing)
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        <i class="fas fa-code text-purple-400 mr-2"></i> Specialization: Computer Science & Engineering (expected)
+                    </p>
+                    <div class="detail-card text-sm text-gray-200">
+                        Currently focused on foundational subjects in Computer Science and developing programming skills.
+                    </div>
+                </div>
+                <!-- Intermediate Education -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-purple-700 hover:border-purple-500 transition-all duration-300 glow-effect relative group education-card-animate">
+                    <h3 class="text-3xl font-semibold text-purple-300 mb-4">Intermediate (12th Grade)</h3>
+                    <p class="text-xl text-gray-200 mb-2">
+                        <i class="fas fa-school text-purple-400 mr-2"></i> St. Xavier's College, Ranchi
+                    </p>
+                    <p class="text-lg text-gray-300 mb-2">
+                        <i class="fas fa-percent text-purple-400 mr-2"></i> Secured 90%
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        <i class="fas fa-calendar-alt text-purple-400 mr-2"></i> Year of Completion: 2023
+                    </p>
+                    <div class="detail-card text-sm text-gray-200">
+                        Achieved strong academic performance in science subjects, building a solid base for engineering.
+                    </div>
+                </div>
+                <!-- Schooling -->
+                <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border border-purple-700 hover:border-purple-500 transition-all duration-300 glow-effect relative group education-card-animate">
+                    <h3 class="text-3xl font-semibold text-purple-300 mb-4">Matriculation (10th Grade)</h3>
+                    <p class="text-xl text-gray-200 mb-2">
+                        <i class="fas fa-school text-purple-400 mr-2"></i> Grizzly Vidyalaya
+                    </p>
+                    <p class="text-lg text-gray-300 mb-2">
+                        <i class="fas fa-percent text-purple-400 mr-2"></i> Secured 95%
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        <i class="fas fa-calendar-alt text-purple-400 mr-2"></i> Year of Completion: 2021
+                    </p>
+                    <div class="detail-card text-sm text-gray-200">
+                        Demonstrated early academic excellence and a keen interest in problem-solving.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                Skills <span class="emoji-rotate">💻</span>
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- HTML5 Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-left">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-html5 text-5xl text-orange-500 mb-3 html-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">HTML5</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Proficient in structuring web content with semantic HTML for robust and accessible web applications.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- CSS3 Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-top">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-css3-alt text-5xl text-blue-500 mb-3 css-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">CSS3</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Skilled in styling web pages, creating responsive layouts, and implementing modern design principles.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- JavaScript Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-right">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-js text-5xl text-yellow-400 mb-3 js-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">JavaScript</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Developing interactive web experiences, dynamic content, and client-side logic.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- React.js Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-bottom">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-react text-5xl text-blue-400 mb-3 react-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">React.js</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Building modern, efficient, and component-based user interfaces with React.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Python Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-left">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-python text-5xl text-blue-600 mb-3 python-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">Python</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Foundational knowledge in scripting, data manipulation, and general-purpose programming.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- SQL Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-top">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fas fa-database text-5xl text-gray-400 mb-3 sql-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">SQL</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Basic understanding of relational databases, data querying, and database management.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Git/GitHub Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-right">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-github text-5xl text-white mb-3 github-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">Git/GitHub</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Proficient in version control, collaborative development, and code management.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Figma Skill Card -->
+                <div class="skill-card-flip-container skill-card-animate from-bottom">
+                    <div class="skill-card-flipper">
+                        <div class="skill-card-front">
+                            <i class="fab fa-figma text-5xl text-pink-500 mb-3 figma-logo-animated"></i>
+                            <p class="text-xl font-semibold text-gray-100">Figma</p>
+                        </div>
+                        <div class="skill-card-back">
+                            <p class="text-lg text-gray-200">Basic UI/UX design, prototyping, and wireframing skills for web interfaces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                Projects <span class="emoji-pulse">🚀</span>
+            </h2>
+            <!-- Adjusted grid for 2x2 layout on medium and large screens, centered items -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 justify-items-center max-w-4xl mx-auto">
+                <!-- Project Card 1: Interactive Calculator -->
+                <div class="project-card-flip-container w-[320px] project-card-animated" data-animation-type="slide-in-left">
+                    <div class="project-card-flipper">
+                        <div class="project-card-front">
+                            <img src="https://i.postimg.cc/X7PtPzk2/calc1.jpg" alt="Interactive Calculator Project" class="rounded-lg mb-6 w-full h-48 object-cover">
+                            <h3 class="text-2xl font-semibold text-purple-300 mb-3">Interactive Calculator <span class="emoji-calculator-shake">🧮</span></h3>
+                            <button class="toggle-details-btn inline-block bg-purple-600 text-white py-2 px-5 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300">
+                                View Details <i class="fas fa-info-circle ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="project-card-back">
+                            <p class="text-gray-300 mb-4" data-full-text="A fully functional web-based calculator built using HTML, CSS, and JavaScript. It handles basic arithmetic operations and demonstrates DOM manipulation.">
+                                A fully functional web-based calculator built using HTML, CSS, and JavaScript. It handles basic arithmetic operations and demonstrates DOM manipulation.
+                            </p>
+                            <button class="toggle-details-btn mt-6 text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                                <i class="fas fa-times-circle mr-1"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2: Responsive Landing Page -->
+                <div class="project-card-flip-container w-[320px] project-card-animated" data-animation-type="slide-in-right">
+                    <div class="project-card-flipper">
+                        <div class="project-card-front">
+                            <!-- Updated image source -->
+                            <img src="https://i.postimg.cc/6pRbm533/res1.jpg" alt="Responsive Landing Page Project" class="rounded-lg mb-6 w-full h-48 object-cover">
+                            <h3 class="text-2xl font-semibold text-purple-300 mb-3">Responsive Landing Page <span class="emoji-globe-rotate">🌐</span></h3>
+                            <button class="toggle-details-btn inline-block bg-purple-600 text-white py-2 px-5 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300">
+                                View Details <i class="fas fa-info-circle ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="project-card-back">
+                            <p class="text-gray-300 mb-4" data-full-text="A modern and fully responsive landing page designed with HTML and Tailwind CSS. Focuses on clean UI/UX and adaptability across devices.">
+                                A modern and fully responsive landing page designed with HTML and Tailwind CSS. Focuses on clean UI/UX and adaptability across devices.
+                            </p>
+                            <button class="toggle-details-btn mt-6 text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                                <i class="fas fa-times-circle mr-1"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3: Simple To-Do List App -->
+                <div class="project-card-flip-container w-[320px] project-card-animated" data-animation-type="fade-in-up-scale">
+                    <div class="project-card-flipper">
+                        <div class="project-card-front">
+                            <img src="https://i.postimg.cc/9F0vJhZR/todo1.jpg" alt="To-Do List App Project" class="rounded-lg mb-6 w-full h-48 object-cover">
+                            <h3 class="text-2xl font-semibold text-purple-300 mb-3">Simple To-Do List App <span class="emoji-bounce">✅</span></h3>
+                            <button class="toggle-details-btn inline-block bg-purple-600 text-white py-2 px-5 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300">
+                                View Details <i class="fas fa-info-circle ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="project-card-back">
+                            <p class="text-gray-300 mb-4" data-full-text="A basic To-Do List application using HTML, CSS, and JavaScript. Allows users to add, delete, and mark tasks as complete, utilizing local storage.">
+                                A basic To-Do List application using HTML, CSS, and JavaScript. Allows users to add, delete, and mark tasks as complete, utilizing local storage.
+                            </p>
+                            <button class="toggle-details-btn mt-6 text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                                <i class="fas fa-times-circle mr-1"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Project Card: Personal Portfolio Website -->
+                <div class="project-card-flip-container w-[320px] project-card-animated" data-animation-type="fade-in-bounce">
+                    <div class="project-card-flipper">
+                        <div class="project-card-front">
+                            <img src="https://i.postimg.cc/QN02Qt9Z/por1.jpg" alt="Personal Portfolio Website Project" class="rounded-lg mb-6 w-full h-48 object-cover">
+                            <h3 class="text-2xl font-semibold text-purple-300 mb-3">Personal Portfolio Website <span class="emoji-pulse">⭐</span></h3>
+                            <button class="toggle-details-btn inline-block bg-purple-600 text-white py-2 px-5 rounded-full text-sm hover:bg-purple-700 transition-colors duration-300">
+                                View Details <i class="fas fa-info-circle ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="project-card-back">
+                            <p class="text-gray-300 mb-4" data-full-text="The very website you are viewing now! Built to showcase my skills and projects. This responsive portfolio serves as a dynamic resume, featuring interactive elements, smooth animations, and a modern design. It's built with HTML, Tailwind CSS, and JavaScript.">
+                                The very website you are viewing now! Built to showcase my skills and projects. This responsive portfolio serves as a dynamic resume, featuring interactive elements, smooth animations, and a modern design. It's built with HTML, Tailwind CSS, and JavaScript.
+                            </p>
+                            <button class="toggle-details-btn mt-6 text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                                <i class="fas fa-times-circle mr-1"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center mt-12">
+                <p class="text-gray-400 text-xl">More exciting projects are on the way! Stay tuned... <span class="emoji-shake">🚧</span></p>
+            </p>
+            </div>
+        </section>
+
+        <!-- What I Am Currently Learning Section -->
+        <section id="learning" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                What I'm Currently Learning <span class="emoji-bounce">📚</span>
+            </h2>
+            <div class="relative max-w-3xl mx-auto mt-10">
+                <div class="learning-line"></div>
+                <div class="learning-item learning-item-animate">
+                    <div class="learning-icon-container">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="learning-content">
+                        <h3 class="text-2xl font-semibold text-purple-300 mb-2">Advanced JavaScript Concepts <span class="learning-emoji">💡</span></h3>
+                        <p class="text-lg text-gray-300 mb-2" data-full-text="Diving deeper into asynchronous JavaScript, closures, prototypal inheritance, and ES6+ features to write more efficient and robust code.">
+                            Diving deeper into asynchronous JavaScript, closures, prototypal inheritance, and ES6+ features to write more efficient and robust code.
+                        </p>
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-hourglass-half text-purple-400 mr-2"></i> Progress: Intermediate
+                        </div>
+                    </div>
+                </div>
+                <div class="learning-item learning-item-animate">
+                    <div class="learning-icon-container">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="learning-content">
+                        <h3 class="text-2xl font-semibold text-purple-300 mb-2">Data Structures & Algorithms <span class="learning-emoji">🧠</span></h3>
+                        <p class="text-lg text-gray-300 mb-2" data-full-text="Strengthening my foundational knowledge in DSA to optimize code performance and solve complex algorithmic problems.">
+                            Strengthening my foundational knowledge in DSA to optimize code performance and solve complex algorithmic problems.
+                        </p>
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-hourglass-half text-purple-400 mr-2"></i> Progress: Beginner-Intermediate
+                        </div>
+                    </div>
+                </div>
+                <div class="learning-item learning-item-animate">
+                    <div class="learning-icon-container">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="learning-content">
+                        <h3 class="text-2xl font-semibold text-purple-300 mb-2">Cloud Computing Basics (AWS/GCP) <span class="learning-emoji">☁️</span></h3>
+                        <p class="text-lg text-gray-300 mb-2" data-full-text="Exploring fundamental concepts of cloud platforms, including services like EC2, S3, and basic deployment strategies.">
+                            Exploring fundamental concepts of cloud platforms, including services like EC2, S3, and basic deployment strategies.
+                        </p>
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-hourglass-half text-purple-400 mr-2"></i> Progress: Beginner
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Aim & Ambitions Section -->
+        <section id="aim-ambitions" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                Aim & Ambitions <span class="emoji-shake">🎯</span>
+            </h2>
+            <div class="text-lg leading-relaxed text-center max-w-3xl mx-auto" id="aim-ambitions-content">
+                <!-- Content will be dynamically typed here -->
+                <p class="mb-6" data-full-text="My aim: become a Full-Stack Developer, bridging UI and backend. I create intuitive, secure, scalable apps. 🛠️">
+                    My aim: become a Full-Stack Developer...
+                </p>
+                <p class="mb-6" data-full-text="Long-term: contribute to open-source, collaborate, lead tech initiatives for social impact. Interested in AI/ML for intelligent systems. 🧠�">
+                    Long-term: contribute to open-source...
+                </p>
+                <p data-full-text="Committed to lifelong learning, staying updated. My ambition: leave a mark by building solutions that truly matter. 🌟">
+                    Committed to lifelong learning...
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 px-8 mx-auto max-w-6xl">
+            <h2 class="section-heading text-5xl font-bold text-center text-purple-400 mb-12 text-glow">
+                Get in Touch! <span class="emoji-pulse">📧</span>
+            </h2>
+            <p class="text-center text-xl text-gray-300 mb-10">
+                Have a project idea? Want to collaborate? Or just want to say hi? Feel free to reach out! <span class="emoji-shake">👋</span>
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <a href="mailto:your.email@example.com" class="flex items-center bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 glow-effect">
+                    <i class="fas fa-envelope mr-3"></i> Email Me
+                </a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="flex items-center bg-gray-800 text-gray-200 font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 glow-effect border border-gray-700 hover:border-purple-500">
+                    <i class="fab fa-linkedin mr-3"></i> LinkedIn
+                </a>
+                <a href="https://github.com/yourusername" target="_blank" class="flex items-center bg-gray-800 text-gray-200 font-bold py-4 px-8 rounded-full text-sm hover:bg-gray-600 transition-colors duration-300">
+                    <i class="fab fa-github ml-1"></i> GitHub
+                </a>
+            </div>
+            <div class="text-center mt-12 text-gray-400">
+                <p>&copy; 2025 Md Kaif Nawaz. All rights reserved. <span class="emoji-pulse">✨</span></p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Custom Cursor Trail (Glittery Effect)
+        const customCursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            // Update custom cursor dot position
+            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.top = `${e.clientY}px`;
+
+            // Create particle
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            document.body.appendChild(particle);
+
+            const size = Math.random() * 8 + 8; // Adjusted size for smaller particles (8-16px)
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${e.clientX - size / 2}px`;
+            particle.style.top = `${e.clientY - size / 2}px`;
+
+            // Remove particle after animation
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        });
+
+        // Section Animation on Scroll (Intersection Observer)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the section is visible
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const heading = entry.target.querySelector('.section-heading');
+                    if (heading) {
+                        heading.classList.add('animate-in'); // Animate heading
+                    }
+
+                    // Specific animations for Education, Skills, and Learning sections
+                    if (entry.target.id === 'education') {
+                        const educationCards = entry.target.querySelectorAll('.education-card-animate');
+                        educationCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('animate-in');
+                            }, index * 150); // Staggered animation for cards
+                        });
+                    } else if (entry.target.id === 'skills') {
+                        const skillCards = entry.target.querySelectorAll('.skill-card-animate'); // Target the container
+                        const directions = ['from-left', 'from-top', 'from-right', 'from-bottom'];
+                        skillCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('animate-in', directions[index % directions.length]);
+                            }, index * 250); // Slower staggered animation for skill cards with varied directions
+                        });
+                    } else if (entry.target.id === 'projects') {
+                        const projectCards = entry.target.querySelectorAll('.project-card-animated');
+                        projectCards.forEach((card, index) => {
+                            const animationType = card.dataset.animationType; // Get animation type from data attribute
+                            setTimeout(() => {
+                                card.classList.add(animationType, 'animate-in');
+                            }, index * 200); // Staggered animation for project cards
+                        });
+                    } else if (entry.target.id === 'learning') {
+                        const learningItems = entry.target.querySelectorAll('.learning-item-animate');
+                        learningItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('animate-in');
+                            }, index * 100); // Slightly faster staggered animation for learning items
+                        });
+                    }
+                } else {
+                    // Reset animations when out of view
+                    entry.target.querySelectorAll('.education-card-animate, .skill-card-animate, .learning-item-animate, .section-heading, .project-card-animated').forEach(el => {
+                        el.classList.remove('animate-in', 'from-left', 'from-right', 'from-top', 'from-bottom', 'slide-in-left', 'slide-in-right', 'fade-in-up-scale', 'fade-in-bounce'); // Remove all animation classes
+                    });
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        document.querySelectorAll('section').forEach(element => {
+            observer.observe(element);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.nav-link[href="#home"]').classList.add('active');
+        });
+
+
+        // About Me Section Hover Transition (Replaces Flip)
+        const aboutCard = document.querySelector('.about-card');
+        const aboutCardFront = document.querySelector('.about-card-front');
+        const aboutCardBack = document.querySelector('.about-card-back');
+
+        if (aboutCard && aboutCardFront && aboutCardBack) {
+            aboutCard.addEventListener('mouseenter', () => {
+                // On hover, hide front and show back
+                aboutCardFront.style.opacity = '0';
+                aboutCardFront.style.visibility = 'hidden';
+                aboutCardBack.style.opacity = '1';
+                aboutCardBack.style.visibility = 'visible';
+            });
+
+            aboutCard.addEventListener('mouseleave', () => {
+                // On mouse leave, show front and hide back
+                aboutCardFront.style.opacity = '1';
+                aboutCardFront.style.visibility = 'visible';
+                aboutCardBack.style.opacity = '0';
+                aboutCardBack.style.visibility = 'hidden';
+            });
+        }
+
+
+        // Tile Hover Smoke Effect (Refined)
+        // Update this to target .skill-card-flip-container instead of .skill-card
+        const interactiveTiles = document.querySelectorAll('.skill-card-flip-container, .bg-gray-800'); // Select all cards
+
+        let smokeIntervals = new Map(); // To store intervals for each tile
+
+        interactiveTiles.forEach(tile => {
+            tile.addEventListener('mouseenter', () => {
+                // Clear any existing interval for this tile
+                if (smokeIntervals.has(tile)) {
+                    clearInterval(smokeIntervals.get(tile));
+                }
+
+                // Start continuous smoke generation
+                const interval = setInterval(() => {
+                    for (let i = 0; i < 5; i++) { // Generate 5 particles per interval
+                        const smokeParticle = document.createElement('div');
+                        smokeParticle.className = 'smoke-particle';
+                        tile.appendChild(smokeParticle); // Append to the tile itself
+
+                        // Position randomly along the tile's border
+                        const rect = tile.getBoundingClientRect();
+                        let x, y;
+
+                        // Randomly choose a side (top, right, bottom, left)
+                        const side = Math.floor(Math.random() * 4);
+
+                        if (side === 0) { // Top
+                            x = Math.random() * rect.width;
+                            y = 0;
+                        } else if (side === 1) { // Right
+                            x = rect.width;
+                            y = Math.random() * rect.height;
+                        } else if (side === 2) { // Bottom
+                            x = Math.random() * rect.width;
+                            y = rect.height;
+                        } else { // Left
+                            x = 0;
+                            y = Math.random() * rect.height;
+                        }
+
+                        const size = Math.random() * 12 + 10; // Larger size for smoke particles
+                        smokeParticle.style.width = `${size}px`;
+                        smokeParticle.style.height = `${size}px`;
+                        smokeParticle.style.left = `${x - size / 2}px`;
+                        smokeParticle.style.top = `${y - size / 2}px`;
+
+                        // Remove particle after animation
+                        smokeParticle.addEventListener('animationend', () => {
+                            smokeParticle.remove();
+                        });
+                    }
+                }, 100); // Generate particles every 100ms for continuous effect
+                smokeIntervals.set(tile, interval); // Store the interval
+            });
+
+            tile.addEventListener('mouseleave', () => {
+                // Clear the interval for this tile
+                if (smokeIntervals.has(tile)) {
+                    clearInterval(smokeIntervals.get(tile));
+                    smokeIntervals.delete(tile);
+                }
+                // Immediately remove any remaining smoke particles for a clean exit
+                tile.querySelectorAll('.smoke-particle').forEach(p => p.remove());
+            });
+        });
+
+
+        // Navbar active link highlighting (existing logic, moved for clarity)
+        const navSections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            navSections.forEach(section => {
+                const sectionTop = section.offsetTop - 100; // Adjust for navbar height
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.href.includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Aim & Ambitions Typing Effect
+        const aimAmbitionsSection = document.getElementById('aim-ambitions');
+        const aimAmbitionsParagraphs = aimAmbitionsSection.querySelectorAll('p');
+        let typingIntervals = [];
+
+        function typeText(paragraphElement, fullText, delay = 20) { // Increased typing speed (20ms delay)
+            let index = 0;
+            paragraphElement.textContent = ''; // Clear existing text
+            const interval = setInterval(() => {
+                if (index < fullText.length) {
+                    paragraphElement.textContent += fullText[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, delay);
+            typingIntervals.push(interval); // Store interval ID to clear later
+        }
+
+        function clearTypingIntervals() {
+            typingIntervals.forEach(interval => clearInterval(interval));
+            typingIntervals = []; // Clear the array
+        }
+
+        aimAmbitionsSection.addEventListener('mouseenter', () => {
+            clearTypingIntervals(); // Clear any existing typing
+            aimAmbitionsParagraphs.forEach(p => {
+                const fullText = p.getAttribute('data-full-text');
+                if (fullText) {
+                    typeText(p, fullText);
+                }
+            });
+        });
+
+        aimAmbitionsSection.addEventListener('mouseleave', () => {
+            clearTypingIntervals(); // Stop typing immediately
+            aimAmbitionsParagraphs.forEach(p => {
+                const fullText = p.getAttribute('data-full-text');
+                if (fullText) {
+                    p.textContent = fullText; // Revert to full text instantly
+                }
+            });
+        });
+
+        // Initial state for Aim & Ambitions (show full shortened text)
+        document.addEventListener('DOMContentLoaded', () => {
+            aimAmbitionsParagraphs.forEach(p => {
+                const fullText = p.getAttribute('data-full-text');
+                if (fullText) {
+                    p.textContent = fullText; // Display the full shortened text initially
+                }
+            });
+        });
+
+        // Section heading animation on section hover
+        document.querySelectorAll('section').forEach(section => {
+            section.addEventListener('mouseenter', () => {
+                const heading = section.querySelector('.section-heading');
+                if (heading) {
+                    heading.classList.add('heading-active-animation');
+                }
+            });
+
+            section.addEventListener('mouseleave', () => {
+                const heading = section.querySelector('.section-heading');
+                if (heading) {
+                    heading.classList.remove('heading-active-animation');
+                }
+            });
+        });
+
+        // Project Card Flip Logic
+        document.querySelectorAll('.project-card-flipper').forEach(flipper => {
+            flipper.addEventListener('click', () => {
+                flipper.classList.toggle('is-flipped');
+            });
+        });
+
+
+        // Video Autoplay with sound consideration and button
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoElement = document.getElementById('background-video');
+            const playSoundButton = document.getElementById('play-sound-button');
+
+            if (videoElement) {
+                // Ensure video starts muted to allow autoplay visually
+                videoElement.muted = true;
+                videoElement.play().catch(error => {
+                    console.log("Video play() failed:", error);
+                    // If even muted play fails (e.g., due to user settings or very strict browser policy),
+                    // there's not much more we can do for autoplay.
+                });
+
+                // Check if the video is currently muted. If so, show the "Play Sound" button.
+                // This handles cases where it's muted by default (HTML) or muted due to browser policy.
+                if (videoElement.muted) {
+                    playSoundButton.style.display = 'block';
+                }
+
+                // Event listener for the "Play Sound" button
+                playSoundButton.addEventListener('click', () => {
+                    if (videoElement.muted) {
+                        videoElement.muted = false; // Unmute the video
+                        playSoundButton.style.display = 'none'; // Hide button once sound is on
+                    }
+                });
+
+                // Optional: Listen for 'volumechange' event to hide/show button if user changes volume manually
+                videoElement.addEventListener('volumechange', () => {
+                    if (videoElement.muted && playSoundButton.style.display === 'none') {
+                        playSoundButton.style.display = 'block'; // Show if muted by user
+                    } else if (!videoElement.muted && playSoundButton.style.display === 'block') {
+                        playSoundButton.style.display = 'none'; // Hide if unmuted by user
+                    }
+                });
+            }
+        });
+
+        // What I'm Currently Learning - Hover effects and typing
+        const learningItems = document.querySelectorAll('.learning-item');
+        let currentTypingInterval = null;
+
+        function typeLearningText(paragraphElement, fullText, delay = 20, emojiElement, headingElement) {
+            let index = 0;
+            paragraphElement.textContent = ''; // Clear existing text
+            clearCurrentTyping(); // Ensure only one typing animation runs at a time
+
+            currentTypingInterval = setInterval(() => {
+                if (index < fullText.length) {
+                    paragraphElement.textContent += fullText[index];
+                    index++;
+                } else {
+                    clearInterval(currentTypingInterval);
+                    currentTypingInterval = null;
+                    // Start emoji blinking and heading glow/dim after typing is complete
+                    if (emojiElement) {
+                        emojiElement.classList.add('emoji-blinking');
+                    }
+                    if (headingElement) {
+                        headingElement.classList.add('heading-glow-dim');
+                    }
+                }
+            }, delay);
+        }
+
+        function clearCurrentTyping() {
+            if (currentTypingInterval) {
+                clearInterval(currentTypingInterval);
+                currentTypingInterval = null;
+            }
+        }
+
+        learningItems.forEach(item => {
+            const descriptionParagraph = item.querySelector('.learning-content p');
+            const headingElement = item.querySelector('.learning-content h3');
+            const emojiElement = item.querySelector('.learning-emoji'); // Select the emoji span
+
+            const originalText = descriptionParagraph.getAttribute('data-full-text');
+
+            // Store original text on load
+            item.setAttribute('data-original-text', originalText);
+
+            item.addEventListener('mouseenter', () => {
+                clearCurrentTyping(); // Stop any other typing
+                learningItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.add('is-inactive-learning');
+                        // Ensure other items' emojis and headings are reset
+                        const otherEmoji = otherItem.querySelector('.learning-emoji');
+                        const otherHeading = otherItem.querySelector('.learning-content h3');
+                        if (otherEmoji) otherEmoji.classList.remove('emoji-blinking');
+                        if (otherHeading) otherHeading.classList.remove('heading-glow-dim');
+                    }
+                });
+                typeLearningText(descriptionParagraph, originalText, 20, emojiElement, headingElement); // Pass emoji and heading elements
+            });
+
+            item.addEventListener('mouseleave', () => {
+                clearCurrentTyping(); // Stop typing on mouse leave
+                descriptionParagraph.textContent = originalText; // Revert to full original text
+                learningItems.forEach(otherItem => {
+                    otherItem.classList.remove('is-inactive-learning');
+                });
+                // Remove animations immediately on mouse leave
+                if (emojiElement) {
+                    emojiElement.classList.remove('emoji-blinking');
+                }
+                if (headingElement) {
+                    headingElement.classList.remove('heading-glow-dim');
+                }
+            });
+        });
+
+        // Set initial text for learning items on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            learningItems.forEach(item => {
+                const descriptionParagraph = item.querySelector('.learning-content p');
+                const originalText = descriptionParagraph.getAttribute('data-full-text');
+                descriptionParagraph.textContent = originalText; // Display full text initially
+            });
+        });
+
+    </script>
+</body>
+</html>
+�
